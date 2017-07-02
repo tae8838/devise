@@ -5,7 +5,7 @@ class Devise::RegistrationsController < DeviseController
 
   # GET /resource/sign_up
   def new
-    build_resource({})
+    build_resource(session[:unsaved_user]) if resource.nil?
     yield resource if block_given?
     respond_with resource
   end
@@ -29,7 +29,8 @@ class Devise::RegistrationsController < DeviseController
     else
       clean_up_passwords resource
       set_minimum_password_length
-      respond_with resource
+      session[:unsaved_user] = resource
+      redirect_to new_registration_path(resource)
     end
   end
 
