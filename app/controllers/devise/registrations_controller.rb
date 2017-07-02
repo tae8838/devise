@@ -5,7 +5,8 @@ class Devise::RegistrationsController < DeviseController
 
   # GET /resource/sign_up
   def new
-    build_resource(session[:unsaved_user]) if resource.nil?
+    build_resource(session[:unsaved_user])
+    session[:unsaved_user] = nil
     yield resource if block_given?
     respond_with resource
   end
